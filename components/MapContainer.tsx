@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Sun, Utensils, LayoutGrid, Info, Plus, Minus, Navigation, Globe, SearchX, Loader2 } from 'lucide-react';
 import { CountryData, MapViewType } from '../types';
@@ -108,6 +107,27 @@ const MapContainer: React.FC<MapContainerProps> = ({ onSelectCountry, selectedCo
     }
   }, [selectedCountry, googleMap]);
 
+  const handleZoomIn = () => {
+    if (googleMap) {
+      const currentZoom = googleMap.getZoom() || 4;
+      googleMap.setZoom(currentZoom + 1);
+    }
+  };
+
+  const handleZoomOut = () => {
+    if (googleMap) {
+      const currentZoom = googleMap.getZoom() || 4;
+      googleMap.setZoom(currentZoom - 1);
+    }
+  };
+
+  const handleRecenter = () => {
+    if (googleMap) {
+      googleMap.panTo({ lat: 52, lng: 12 });
+      googleMap.setZoom(4);
+    }
+  };
+
   return (
     <div className="relative flex-1 h-full bg-gray-100">
       {/* Loading State */}
@@ -204,11 +224,29 @@ const MapContainer: React.FC<MapContainerProps> = ({ onSelectCountry, selectedCo
         ))}
       </div>
 
-      {/* Map Controls */}
-      <div className="absolute bottom-24 right-6 z-10 flex flex-col space-y-2">
-        <button onClick={() => googleMap?.setZoom((googleMap.getZoom() || 0) + 1)} className="p-3 bg-white shadow-xl rounded-xl hover:bg-gray-50 transition-colors"><Plus className="w-5 h-5 text-gray-600" /></button>
-        <button onClick={() => googleMap?.setZoom((googleMap.getZoom() || 0) - 1)} className="p-3 bg-white shadow-xl rounded-xl hover:bg-gray-50 transition-colors"><Minus className="w-5 h-5 text-gray-600" /></button>
-        <button onClick={() => googleMap?.panTo({ lat: 50, lng: 15 })} className="mt-2 p-3 bg-white shadow-xl rounded-xl hover:bg-gray-50 transition-colors"><Navigation className="w-5 h-5 text-gray-600" /></button>
+      {/* Manual Zoom Controls - Enhanced Visibility */}
+      <div className="absolute bottom-32 right-6 z-20 flex flex-col space-y-3">
+        <button 
+          onClick={handleZoomIn}
+          title="Zoom In"
+          className="p-4 bg-white shadow-2xl rounded-2xl hover:bg-emerald-50 hover:scale-110 active:scale-95 transition-all border border-gray-100 group"
+        >
+          <Plus className="w-6 h-6 text-gray-700 group-hover:text-emerald-600" />
+        </button>
+        <button 
+          onClick={handleZoomOut}
+          title="Zoom Out"
+          className="p-4 bg-white shadow-2xl rounded-2xl hover:bg-emerald-50 hover:scale-110 active:scale-95 transition-all border border-gray-100 group"
+        >
+          <Minus className="w-6 h-6 text-gray-700 group-hover:text-emerald-600" />
+        </button>
+        <button 
+          onClick={handleRecenter}
+          title="Recenter Map"
+          className="p-4 bg-white shadow-2xl rounded-2xl hover:bg-emerald-50 hover:scale-110 active:scale-95 transition-all border border-gray-100 group"
+        >
+          <Navigation className="w-6 h-6 text-gray-700 group-hover:text-emerald-600" />
+        </button>
       </div>
 
       {/* Legend */}
