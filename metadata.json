@@ -1,0 +1,7 @@
+{
+  "name": "Interactive Vitamin D Map",
+  "description": "A comprehensive interactive map for tracking Vitamin D deficiency risks across Europe, providing personalized intake recommendations based on location, age, and skin type.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
